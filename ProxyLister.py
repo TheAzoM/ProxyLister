@@ -43,7 +43,7 @@ class ProxyLister:
         self.options = webdriver.ChromeOptions()
         self.options.add_argument("--disable-logging")
         self.options.add_argument("--start-maximized")
-        # self.options.add_argument("--headless")
+        self.options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(executable_path=path, options=self.options)
 

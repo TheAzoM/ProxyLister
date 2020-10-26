@@ -56,8 +56,10 @@ class ProxyLister:
         td_xpath = f"{tr_xpath}/td[{'{}'}]"
 
         self.proxies = []
+        self.scroll_per_proxy = "10"
 
         for y in range(2, piece + 1):
+            self.driver.execute_script(f"window.scrollTo(0, {y*50})")
             proxy = []
 
             for x in range(1, td_length + 1):
@@ -65,6 +67,10 @@ class ProxyLister:
                     proxy.append(self.driver.find_element_by_xpath(td_xpath.format(y, x)).text)
                 except NoSuchElementException:
                     break
+
+            if not proxy:
+                self.driver.quit()
+                return self.proxies
 
             proxy = {
                 "IP": proxy[0],
@@ -77,5 +83,7 @@ class ProxyLister:
             }
 
             self.proxies.append(proxy)
+
+        self.driver.quit()
 
         return self.proxies
